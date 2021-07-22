@@ -69,7 +69,6 @@ zero.grid(row = 4 , column = 0, ipadx = 2 , ipady = 10, padx = 1, pady = 5)
 
 decimal = ttk.Button(key,text = '.' , width = 4, command = lambda : press('.'))
 decimal.grid(row = 4 , column = 1, ipadx = 2 , ipady = 10, padx = 1, pady = 5)
-
 enter   = ttk.Button(key,text = '^' , width = 4, command = lambda : press('^'))
 enter.grid(row = 4, column = 2, ipadx = 2 , ipady = 10, padx = 1, pady = 5)
 
@@ -87,11 +86,11 @@ def press(num):
     global exp
     global prev
     
-    # in this case we are evaluating from a clean slate
-    if prev == "":
+    # # in this case we are evaluating from a clean slate
+    # if prev == "":
     
-    # we have already received input
-    else:
+    # # we have already received input
+    # else:
             
     exp=exp + str(num)
     equation.set(exp)
