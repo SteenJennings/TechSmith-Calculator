@@ -5,6 +5,7 @@ key = tk.Tk()
 
 key.title("TechSmith Calculator")
 
-key.iconbitmap('calculator.ico')
+#TODO: Change the Icon to a Calculator
+key.iconbitmap("/Users/steen/Documents/Cs/Various_Coding/TechSmith-Calculator/calculator.ico")
 
 key.mainloop()
