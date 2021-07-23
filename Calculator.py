@@ -13,12 +13,13 @@ key = tk.Tk()
 display = ""
 prev = None
 operator = None
+
 operators = {"/": "/", "+": "+", "-": "-", "^": "^", "*": "*"}
 
 key.title("TechSmith Calculator")
 
 #TODO: Change the Icon to a Calculator
-key.iconbitmap("/Users/steen/Documents/Cs/Various_Coding/TechSmith-Calculator/calculator.ico")
+key.iconbitmap("/Users/steen/Documents/Cs/Various_Coding/TechSmith-Calculator/calculator.icns")
 
 # establishing the window
 key.geometry('1010x250')         # normal size
@@ -77,6 +78,7 @@ zero.grid(row = 4 , column = 0, ipadx = 2 , ipady = 10, padx = 1, pady = 5)
 
 decimal = ttk.Button(key,text = '.' , width = 4, command = lambda : press('.'))
 decimal.grid(row = 4 , column = 1, ipadx = 2 , ipady = 10, padx = 1, pady = 5)
+
 enter   = ttk.Button(key,text = '^' , width = 4, command = lambda : press('^'))
 enter.grid(row = 4, column = 2, ipadx = 2 , ipady = 10, padx = 1, pady = 5)
 
@@ -84,11 +86,14 @@ add_operator = ttk.Button(key,text = '+' , width = 4, command = lambda : press('
 add_operator.grid(row = 4 , column = 3, ipadx = 2 , ipady = 10, padx = 1, pady = 5)
 
 # adding the keyboard buttons fourth row
-clear = ttk.Button(key,text = 'CLEAR' , width = 15, command = lambda : press('CLEAR'))
-clear.grid(row = 5 , column = 0, columnspan = 2, ipadx = 2 , ipady = 10, padx = 1, pady = 5)
+clear = ttk.Button(key,text = 'CLEAR' , width = 4, command = lambda : press('CLEAR'))
+clear.grid(row = 5 , column = 0, ipadx = 2 , ipady = 10, padx = 1, pady = 5)
 
 enter   = ttk.Button(key,text = 'ENTER' , width = 15, command = lambda : press('ENTER'))
-enter.grid(row = 5, column = 2, columnspan = 2, ipadx = 2 , ipady = 10, padx = 1, pady = 5)
+enter.grid(row = 5, column = 1, columnspan = 2, ipadx = 2 , ipady = 10, padx = 1, pady = 5)
+
+neg_operator = ttk.Button(key,text = 'neg' , width = 4, command = lambda : press('neg'))
+neg_operator.grid(row = 5 , column = 3, ipadx = 2 , ipady = 10, padx = 1, pady = 5)
 
 def doMath(prev, display, operator):
     num1, num2 = checkDecimals(prev, display)
