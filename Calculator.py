@@ -7,6 +7,7 @@ key = tk.Tk()
     # decimals
     # rounding (How many places and when)
     # negative values
+    # passing just "." as a value (I want this to be treated as 0)
 
 # used to store a running calulation
 display = ""
@@ -93,6 +94,14 @@ def doMath(prev, display, operator):
     num1, num2 = checkDecimals(prev, display)
     if operator == "+":
         return num1 + num2
+    if operator == "-":
+        return num1 - num2
+    if operator == "*":
+        return num1 * num
+    if operator == "/":
+        if num1 == 0:
+            return "ERROR"
+        return num1 / num2
     # if operator == "-":
     # if operator == "*":
     # if operator == "/":
@@ -132,31 +141,45 @@ def press(ele):
         equation.set(display)
         return
     
-    # logic to handle bad input while there is an error
+    # logic to handle bad input while there is an error (WORKING)
     if ele != "CLEAR" and display == "ERROR - Press CLEAR":
         return
     
-    # blocks the user from using multiple decimal places
+    # blocks the user from using multiple decimal places (WORKING)
     if ele == ".":
         if "." in display:
             return
     
-    # todo: handle the ENTER key
+    # handle the ENTER key
     if ele == "ENTER":
-        # todo: need to validate if it can be executed
-        pass
+        if prev != None and display != None:
+            # logic to handle
+            calcNum = doMath(prev, display, operator)
+            if calcNum == "ERROR":
+                display = "ERROR - Press CLEAR"
+                equation.set(display)
+                return
+            display = cleanNum(calcNum)
+            operator = None
+            equation.set(display)
+            prev = None
+            return
+        # we return if we are not "ready" for the ENTER key
+        else:
+            return        
     
     # in this case we are evaluating without a running operator
     if ele not in operators and operator == None:
         display=display + str(ele)
         equation.set(display)
-        # write a break of sorts here.
+        return
         
-    if ele in operators:
+    if ele in operators and display != "":
         operator = ele
+        return
     
     # if we already have a value in the display and we just added an operator, create a second display value 
-    if operator != None and display != '' and ele not in operators:  # we will also need to make sure its not clear or enter, but we can handle that above
+    if operator != None and ele not in operators:  # we will also need to make sure its not clear or enter, but we can handle that above
         # if we have not assigned our "Prev" operator yet, we also need to reset display
         if prev == None:
             prev = display
@@ -164,15 +187,19 @@ def press(ele):
         
         display=display + str(ele)
         equation.set(display)
-        print(prev)
+        return
     
     if operator != None and prev != None and display != None and (ele in operators or ele == "enter"):
         calcNum = doMath(prev, display, operator)
-        
+        if calcNum == "ERROR":
+            display = "ERROR - Press CLEAR"
+            equation.set(display)
+            return
         display = cleanNum(calcNum)
         operator = ele
         equation.set(display)
         prev = None
+        return
         
     # # we have already received input
     # else:
