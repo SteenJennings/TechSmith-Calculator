@@ -1,13 +1,25 @@
 import tkinter as tk
 from tkinter import ttk
 
-key = tk.Tk()
+calc = tk.Tk()
 
 # TODO: 
-    # decimals
-    # rounding (How many places and when)
     # negative values
+        # integrate a "-" symbol by pre-pending a negative sign
+        # this should be handled by string conversions to int
+        # we will need to make sure we are not overwriting, unless we want to be able to remove negative signs
+        
     # passing just "." as a value (I want this to be treated as 0)
+        # if we are placing a decimal point at the start, we should automatically add a 0 to pre-pend it
+        
+    # handling leading 0's before non-decimal occurrences
+        # 0437.55 -> 437.55
+        # Could add a rule to ONLY allow leading zeros if the value is a decimal and between -1 and 1
+        # if we are already past the decimal point then 0's can be used freely
+        
+    # accepting input from stdin
+        # would function the same as the "press" method, would have issues if 'illegal' keys are pressed
+        
 
 # used to store a running calulation
 display = ""
@@ -16,83 +28,83 @@ operator = None
 
 operators = {"/": "/", "+": "+", "-": "-", "^": "^", "*": "*"}
 
-key.title("TechSmith Calculator")
+calc.title("TechSmith Calculator")
 
 #TODO: Change the Icon to a Calculator
-key.iconbitmap("/Users/steen/Documents/Cs/Various_Coding/TechSmith-Calculator/calculator.icns")
+calc.iconbitmap("/Users/steen/Documents/Cs/Various_Coding/TechSmith-Calculator/calculator.icns")
 
 # establishing the window
-key.geometry('1010x250')         # normal size
-key.maxsize(width=360, height= 500)      # maximum size
-key.minsize(width= 360 , height = 500)     # minimum size
-key.configure(bg = 'black')
+calc.geometry('1010x250')         # normal size
+calc.maxsize(width=360, height= 360)      # maximum size
+calc.minsize(width= 360 , height = 360)     # minimum size
+calc.configure(bg = 'black')
 
 # Create a TKINTER GUI for a Calculator
 equation = tk.StringVar()
-disp_output = ttk.Entry(key,state= 'readonly',textvariable = equation)
+disp_output = ttk.Entry(calc,state= 'readonly',textvariable = equation)
 disp_output.grid(rowspan= 1 , columnspan = 100, ipadx = 999 , ipady = 20)
 
 
-# adding the keyboard buttons first row
-seven = ttk.Button(key,text = '7' , width = 4, command = lambda : press('7'))
+# adding the calcboard buttons first row
+seven = ttk.Button(calc,text = '7' , width = 4, command = lambda : press('7'))
 seven.grid(row = 1 , column = 0, ipadx = 1 , ipady = 10, padx = 0, pady = 5)
 
-eight = ttk.Button(key,text = '8' , width = 4, command = lambda : press('8'))
+eight = ttk.Button(calc,text = '8' , width = 4, command = lambda : press('8'))
 eight.grid(row = 1 , column = 1, ipadx = 1 , ipady = 10, padx = 0, pady = 5)
 
-nine = ttk.Button(key,text = '9' , width = 4, command = lambda : press('9'))
+nine = ttk.Button(calc,text = '9' , width = 4, command = lambda : press('9'))
 nine.grid(row = 1 , column = 2, ipadx = 1, ipady = 10, padx = 1, pady = 5)
 
-div_operator = ttk.Button(key,text = '/' , width = 4, command = lambda : press('/'))
+div_operator = ttk.Button(calc,text = '/' , width = 4, command = lambda : press('/'))
 div_operator.grid(row = 1 , column = 3, ipadx = 1, ipady = 10, padx = 1, pady = 5)
 
-# adding the keyboard buttons second row
-four = ttk.Button(key,text = '4' , width = 4, command = lambda : press('4'))
+# adding the calcboard buttons second row
+four = ttk.Button(calc,text = '4' , width = 4, command = lambda : press('4'))
 four.grid(row = 2 , column = 0, ipadx = 2 , ipady = 10, padx = 1, pady = 5)
 
-five = ttk.Button(key,text = '5' , width = 4, command = lambda : press('5'))
+five = ttk.Button(calc,text = '5' , width = 4, command = lambda : press('5'))
 five.grid(row = 2 , column = 1, ipadx = 2 , ipady = 10, padx = 1, pady = 5)
 
-six  = ttk.Button(key,text = '6' , width = 4, command = lambda : press('6'))
+six  = ttk.Button(calc,text = '6' , width = 4, command = lambda : press('6'))
 six.grid(row = 2, column = 2, ipadx = 2 , ipady = 10, padx = 1, pady = 5)
 
-mult_operator = ttk.Button(key,text = '*' , width = 4, command = lambda : press('*'))
+mult_operator = ttk.Button(calc,text = '*' , width = 4, command = lambda : press('*'))
 mult_operator.grid(row = 2 , column = 3, ipadx = 2 , ipady = 10, padx = 1, pady = 5)
 
-# adding the keyboard buttons third row
-one = ttk.Button(key,text = '1' , width = 4, command = lambda : press('1'))
+# adding the calcboard buttons third row
+one = ttk.Button(calc,text = '1' , width = 4, command = lambda : press('1'))
 one.grid(row = 3 , column = 0, ipadx = 2 , ipady = 10, padx = 1, pady = 5)
 
-two = ttk.Button(key,text = '2' , width = 4, command = lambda : press('2'))
+two = ttk.Button(calc,text = '2' , width = 4, command = lambda : press('2'))
 two.grid(row = 3 , column = 1, ipadx = 2 , ipady = 10, padx = 1, pady = 5)
 
-three  = ttk.Button(key,text = '3' , width = 4, command = lambda : press('3'))
+three  = ttk.Button(calc,text = '3' , width = 4, command = lambda : press('3'))
 three.grid(row = 3, column = 2, ipadx = 2 , ipady = 10, padx = 1, pady = 5)
 
-min_operator = ttk.Button(key,text = '-' , width = 4, command = lambda : press('-'))
+min_operator = ttk.Button(calc,text = '-' , width = 4, command = lambda : press('-'))
 min_operator.grid(row = 3 , column = 3, ipadx = 2 , ipady = 10, padx = 1, pady = 5)
 
-# adding the keyboard buttons fourth row
-zero = ttk.Button(key,text = '0' , width = 4, command = lambda : press('0'))
+# adding the calcboard buttons fourth row
+zero = ttk.Button(calc,text = '0' , width = 4, command = lambda : press('0'))
 zero.grid(row = 4 , column = 0, ipadx = 2 , ipady = 10, padx = 1, pady = 5)
 
-decimal = ttk.Button(key,text = '.' , width = 4, command = lambda : press('.'))
+decimal = ttk.Button(calc,text = '.' , width = 4, command = lambda : press('.'))
 decimal.grid(row = 4 , column = 1, ipadx = 2 , ipady = 10, padx = 1, pady = 5)
 
-enter   = ttk.Button(key,text = '^' , width = 4, command = lambda : press('^'))
+enter   = ttk.Button(calc,text = '^' , width = 4, command = lambda : press('^'))
 enter.grid(row = 4, column = 2, ipadx = 2 , ipady = 10, padx = 1, pady = 5)
 
-add_operator = ttk.Button(key,text = '+' , width = 4, command = lambda : press('+'))
+add_operator = ttk.Button(calc,text = '+' , width = 4, command = lambda : press('+'))
 add_operator.grid(row = 4 , column = 3, ipadx = 2 , ipady = 10, padx = 1, pady = 5)
 
-# adding the keyboard buttons fourth row
-clear = ttk.Button(key,text = 'CLEAR' , width = 4, command = lambda : press('CLEAR'))
+# adding the calcboard buttons fourth row
+clear = ttk.Button(calc,text = 'CLEAR' , width = 4, command = lambda : press('CLEAR'))
 clear.grid(row = 5 , column = 0, ipadx = 2 , ipady = 10, padx = 1, pady = 5)
 
-enter   = ttk.Button(key,text = 'ENTER' , width = 15, command = lambda : press('ENTER'))
+enter   = ttk.Button(calc,text = 'ENTER' , width = 15, command = lambda : press('ENTER'))
 enter.grid(row = 5, column = 1, columnspan = 2, ipadx = 2 , ipady = 10, padx = 1, pady = 5)
 
-neg_operator = ttk.Button(key,text = 'neg' , width = 4, command = lambda : press('neg'))
+neg_operator = ttk.Button(calc,text = 'neg' , width = 4, command = lambda : press('neg'))
 neg_operator.grid(row = 5 , column = 3, ipadx = 2 , ipady = 10, padx = 1, pady = 5)
 
 def doMath(prev, display, operator):
@@ -130,13 +142,15 @@ def cleanNum(num):
     return str(res)
 
 def press(ele):
+    """Handles all the possible routes for key presses on the calculator"""
     global prev
     global display
     global operator
     global operators
     
     #todo: handle negatives in the calculator
-    # clearing the display logic, resets everything to starting form
+    
+    # clearing the display logic, resets everything to starting form (WORKING)
     if ele == "CLEAR":
         display = ""
         prev = None
@@ -153,7 +167,7 @@ def press(ele):
         if "." in display:
             return
     
-    # handle the ENTER key
+    # handle the ENTER key (WORKING)
     if ele == "ENTER":
         if prev != None and display != None:
             # logic to handle
@@ -167,16 +181,18 @@ def press(ele):
             equation.set(display)
             prev = None
             return
-        # we return if we are not "ready" for the ENTER key
+        # we return if we are not "ready" for the ENTER key to avoid errors
         else:
             return        
     
-    # in this case we are evaluating without a running operator
+    # in this case we are evaluating without a running operator (WORKING)
+    # we are only checking against operators because the CLEAR and ENTER keys are processed above
     if ele not in operators and operator == None:
         display=display + str(ele)
         equation.set(display)
         return
-        
+    
+    # if we have something in the display, we are going to 
     if ele in operators and display != "":
         operator = ele
         return
@@ -204,4 +220,4 @@ def press(ele):
         prev = None
         return
         
-key.mainloop()
+calc.mainloop()
