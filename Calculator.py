@@ -22,16 +22,27 @@ calc = tk.Tk()
         
 
 # used to store a running calulation
-display = ""
-prev = None
-operator = None
+class calcVariables:
+    def __init__(self):
+        self.prev = None
+        self.display = ""
+        self.operator = None
+        self.count = 0
+        self.operators = {"/": "/", "+": "+", "-": "-", "^": "^", "*": "*"}
 
-operators = {"/": "/", "+": "+", "-": "-", "^": "^", "*": "*"}
+# calc = Calculation()
+# display = ""
+# prev = None
+# operator = None
+# operators = {"/": "/", "+": "+", "-": "-", "^": "^", "*": "*"}
+# count = 0
+
+vars = calcVariables()
 
 calc.title("TechSmith Calculator")
 
 #TODO: Change the Icon to a Calculator
-calc.iconbitmap("/Users/steen/Documents/Cs/Various_Coding/TechSmith-Calculator/calculator.icns")
+calc.iconbitmap("calculator.icns")
 
 # establishing the window
 calc.geometry('1010x250')         # normal size
@@ -104,6 +115,7 @@ clear.grid(row = 5 , column = 0, ipadx = 2 , ipady = 10, padx = 1, pady = 5)
 enter   = ttk.Button(calc,text = 'ENTER' , width = 15, command = lambda : press('ENTER'))
 enter.grid(row = 5, column = 1, columnspan = 2, ipadx = 2 , ipady = 10, padx = 1, pady = 5)
 
+# todo: implement the negative function
 neg_operator = ttk.Button(calc,text = 'neg' , width = 4, command = lambda : press('neg'))
 neg_operator.grid(row = 5 , column = 3, ipadx = 2 , ipady = 10, padx = 1, pady = 5)
 
@@ -141,83 +153,82 @@ def cleanNum(num):
     res = "{:.8g}".format(num)
     return str(res)
 
+def updateDisplay(newOperator=None):
+  
+    calcNum = doMath(vars.prev, vars.display, vars.operator)
+    if calcNum == "ERROR":
+        vars.displa = "ERROR - Press CLEAR"
+        equation.set(vars.display)
+        return
+    
+    vars.display = cleanNum(calcNum)
+    vars.operator = newOperator
+    equation.set(vars.display)
+    vars.prev = None
+    return
+
 def press(ele):
     """Handles all the possible routes for key presses on the calculator"""
-    global prev
-    global display
-    global operator
-    global operators
+    vars.count += 1
+    
+    print(vars.prev, vars.display, vars.operator, vars.count)
     
     #todo: handle negatives in the calculator
     
     # clearing the display logic, resets everything to starting form (WORKING)
     if ele == "CLEAR":
-        display = ""
-        prev = None
-        operator = None
-        equation.set(display)
+        vars.display = ""
+        vars.prev = None
+        vars.operator = None
+        equation.set(vars.display)
+        vars.count = 0
         return
     
     # logic to handle bad input while there is an error (WORKING)
-    if ele != "CLEAR" and display == "ERROR - Press CLEAR":
+    if ele != "CLEAR" and vars.display == "ERROR - Press CLEAR":
         return
     
     # blocks the user from using multiple decimal places (WORKING)
     if ele == ".":
-        if "." in display:
+        if "." in vars.display:
             return
     
     # handle the ENTER key (WORKING)
     if ele == "ENTER":
-        if prev != None and display != None:
+        if vars.prev != None and vars.display != None:
             # logic to handle
-            calcNum = doMath(prev, display, operator)
-            if calcNum == "ERROR":
-                display = "ERROR - Press CLEAR"
-                equation.set(display)
-                return
-            display = cleanNum(calcNum)
-            operator = None
-            equation.set(display)
-            prev = None
-            return
+            return updateDisplay()
         # we return if we are not "ready" for the ENTER key to avoid errors
         else:
             return        
     
     # in this case we are evaluating without a running operator (WORKING)
     # we are only checking against operators because the CLEAR and ENTER keys are processed above
-    if ele not in operators and operator == None:
-        display=display + str(ele)
-        equation.set(display)
+    if ele not in vars.operators and vars.operator == None:
+        vars.display=vars.display + str(ele)
+        equation.set(vars.display)
         return
-    
-    # if we have something in the display, we are going to 
-    if ele in operators and display != "":
-        operator = ele
-        return
-    
+
     # if we already have a value in the display and we just added an operator, create a second display value 
-    if operator != None and ele not in operators:  # we will also need to make sure its not clear or enter, but we can handle that above
-        # if we have not assigned our "Prev" operator yet, we also need to reset display
-        if prev == None:
-            prev = display
-            display = ""
+    if vars.operator != None and ele not in vars.operators:  # we will also need to make sure its not clear or enter, but we can handle that above
+        print("im here")
+        # if we have not assigned our "vars.prev" operator yet, we also need to reset display
+        if vars.prev == None:
+            vars.prev = vars.display
+            vars.display = ""
         
-        display=display + str(ele)
-        equation.set(display)
+        vars.display=vars.display + str(ele)
+        equation.set(vars.display)
         return
     
-    if operator != None and prev != None and display != None and (ele in operators or ele == "enter"):
-        calcNum = doMath(prev, display, operator)
-        if calcNum == "ERROR":
-            display = "ERROR - Press CLEAR"
-            equation.set(display)
-            return
-        display = cleanNum(calcNum)
-        operator = ele
-        equation.set(display)
-        prev = None
+    #
+    if vars.operator != None and vars.prev != None and vars.display != None and ele in vars.operators:
+        return updateDisplay(ele)  
+    
+    # if we have something in the vars.display, we are going to 
+    if ele in vars.operators and vars.display != "":
+        print("vars.operator print check")
+        vars.operator = ele
         return
-        
+    
 calc.mainloop()
