@@ -3,9 +3,16 @@ from tkinter import ttk
 
 key = tk.Tk()
 
+# TODO: 
+    # decimals
+    # rounding (How many places and when)
+    # negative values
+
 # used to store a running calulation
-prev = ""
-exp = ""
+display = ""
+prev = None
+operator = None
+operators = {"/": "/", "+": "+", "-": "-", "^": "^", "*": "*"}
 
 key.title("TechSmith Calculator")
 
@@ -82,18 +89,96 @@ clear.grid(row = 5 , column = 0, columnspan = 2, ipadx = 2 , ipady = 10, padx = 
 enter   = ttk.Button(key,text = 'ENTER' , width = 15, command = lambda : press('ENTER'))
 enter.grid(row = 5, column = 2, columnspan = 2, ipadx = 2 , ipady = 10, padx = 1, pady = 5)
 
-def press(num):
-    global exp
+def doMath(prev, display, operator):
+    num1, num2 = checkDecimals(prev, display)
+    if operator == "+":
+        return num1 + num2
+    # if operator == "-":
+    # if operator == "*":
+    # if operator == "/":
+    return
+
+# checks whether two values are decimals or integers and returns the floating point value
+def checkDecimals(prev, display):
+    if "." in prev:
+        num1 = float(prev)
+    else:
+        num1 = int(prev)
+    if "." in display:
+        num2 = float(display)
+    else:
+        num2 = int(display)
+    
+    return num1, num2
+
+def cleanNum(num):
+    """takes in an integer or floating point value and returns a 
+    string of the number with at most 8 decimal places"""
+    res = "{:.8g}".format(num)
+    return str(res)
+
+def press(ele):
     global prev
+    global display
+    global operator
+    global operators
     
-    # # in this case we are evaluating from a clean slate
-    # if prev == "":
+    #todo: handle negatives in the calculator
+    # clearing the display logic, resets everything to starting form
+    if ele == "CLEAR":
+        display = ""
+        prev = None
+        operator = None
+        equation.set(display)
+        return
     
+    # logic to handle bad input while there is an error
+    if ele != "CLEAR" and display == "ERROR - Press CLEAR":
+        return
+    
+    # blocks the user from using multiple decimal places
+    if ele == ".":
+        if "." in display:
+            return
+    
+    # todo: handle the ENTER key
+    if ele == "ENTER":
+        # todo: need to validate if it can be executed
+        pass
+    
+    # in this case we are evaluating without a running operator
+    if ele not in operators and operator == None:
+        display=display + str(ele)
+        equation.set(display)
+        # write a break of sorts here.
+        
+    if ele in operators:
+        operator = ele
+    
+    # if we already have a value in the display and we just added an operator, create a second display value 
+    if operator != None and display != '' and ele not in operators:  # we will also need to make sure its not clear or enter, but we can handle that above
+        # if we have not assigned our "Prev" operator yet, we also need to reset display
+        if prev == None:
+            prev = display
+            display = ""
+        
+        display=display + str(ele)
+        equation.set(display)
+        print(prev)
+    
+    if operator != None and prev != None and display != None and (ele in operators or ele == "enter"):
+        calcNum = doMath(prev, display, operator)
+        
+        display = cleanNum(calcNum)
+        operator = ele
+        equation.set(display)
+        prev = None
+        
     # # we have already received input
     # else:
             
-    exp=exp + str(num)
-    equation.set(exp)
+    # exp=exp + str(num)
+    # equation.set(exp)
 
 
 key.mainloop()
