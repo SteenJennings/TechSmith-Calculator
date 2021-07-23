@@ -97,14 +97,13 @@ def doMath(prev, display, operator):
     if operator == "-":
         return num1 - num2
     if operator == "*":
-        return num1 * num
+        return num1 * num2
     if operator == "/":
-        if num1 == 0:
+        if num2 == 0:
             return "ERROR"
         return num1 / num2
-    # if operator == "-":
-    # if operator == "*":
-    # if operator == "/":
+    if operator == "^":
+        return num1 ** num2
     return
 
 # checks whether two values are decimals or integers and returns the floating point value
@@ -117,7 +116,6 @@ def checkDecimals(prev, display):
         num2 = float(display)
     else:
         num2 = int(display)
-    
     return num1, num2
 
 def cleanNum(num):
@@ -201,11 +199,4 @@ def press(ele):
         prev = None
         return
         
-    # # we have already received input
-    # else:
-            
-    # exp=exp + str(num)
-    # equation.set(exp)
-
-
 key.mainloop()
